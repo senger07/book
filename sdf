@@ -1,1 +1,22 @@
 
+# Параметры
+$SmtpServer = "11.0.0.3"   # IP или имя вашего Postfix сервера
+$SmtpPort   = 25           # Стандартный порт SMTP
+$From       = "director@demo.lab"
+$To         = "test@mail.ru" # Адрес получателя
+$Subject    = "Тестовое письмо из PowerShell"
+$Body       = "Привет! Это тестовое сообщение, отправленное скриптом PowerShell."
+
+# Отправка
+try {
+    Send-MailMessage -SmtpServer $SmtpServer `
+                     -Port $SmtpPort `
+                     -From $From `
+                     -To $To `
+                     -Subject $Subject `
+                     -Body $Body `
+                     -Encoding UTF8
+    Write-Host "Письмо успешно отправлено!" -ForegroundColor Green
+} catch {
+    Write-Host "Ошибка при отправке: $_" -ForegroundColor Red
+}
