@@ -1,11 +1,19 @@
-
 # Параметры
 $SmtpServer = "11.0.0.3"   # IP или имя вашего Postfix сервера
 $SmtpPort   = 25           # Стандартный порт SMTP
-$From       = "director@demo.lab"
-$To         = "test@mail.ru" # Адрес получателя
-$Subject    = "Тестовое письмо из PowerShell"
-$Body       = "Привет! Это тестовое сообщение, отправленное скриптом PowerShell."
+$From       = "test@mail.ru"
+$To         = "director@demo.lab" 
+$Subject    = "Тестовое письмо с вложением"
+$Body       = "Привет! Во вложении находится тестовый файл."
+
+# Путь к файлу для вложения (укажите свой путь)
+$AttachmentPath = "C:\Temp\test.txt" 
+
+# Проверка, существует ли файл (чтобы скрипт не падал втихую)
+if (-not (Test-Path -Path $AttachmentPath)) {
+    Write-Host "Ошибка: Файл по пути $AttachmentPath не найден!" -ForegroundColor Red
+    exit
+}
 
 # Отправка
 try {
@@ -15,8 +23,9 @@ try {
                      -To $To `
                      -Subject $Subject `
                      -Body $Body `
+                     -Attachments $AttachmentPath `
                      -Encoding UTF8
-    Write-Host "Письмо успешно отправлено!" -ForegroundColor Green
+    Write-Host "Письмо с вложением успешно отправлено!" -ForegroundColor Green
 } catch {
     Write-Host "Ошибка при отправке: $_" -ForegroundColor Red
 }
